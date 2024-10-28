@@ -7,13 +7,16 @@ update_book_site_bp = Blueprint('update_book', __name__)
 @update_book_site_bp.route('/update_book/<int:book_id>', methods=['GET', 'POST'])
 def update_book(book_id):
     print("Переход на update_book.html")
-    author_id = None
+
     # Попробуем загрузить книгу по `book_id`
     try:
         book = Book.get_by_id(book_id)
     except Book.DoesNotExist:
         flash("Книга не найдена.")
         return redirect(url_for('home'))
+
+    # Попробуем загрузить автора книги, если он есть
+    author = Author.get_by_id(book.author_id) if book.author_id else None
 
     # Обработка POST-запроса для обновления данных книги
     if request.method == 'POST':
@@ -36,11 +39,9 @@ def update_book(book_id):
                     last_name=last_name
                 )
                 if author:
-                    # Если автор существует, получаем его id
                     author_id = author.id
                     flash(f"Автор уже существует: {first_name} {last_name}")
                 else:
-                    # Если автор не существует, создаем нового автора
                     author = Author.create(
                         first_name=first_name,
                         last_name=last_name
@@ -50,7 +51,7 @@ def update_book(book_id):
             except Exception as e:
                 print(f"Ошибка при обработке автора: {e}")
                 flash("Произошла ошибка при обработке автора.")
-                return render_template("update_book.html", book=book)
+                return render_template("update_book.html", book=book, author=author)
 
         # Обновляем данные книги только если поля заполнены
         try:
@@ -69,5 +70,5 @@ def update_book(book_id):
             flash("Произошла ошибка при изменении книги.")
 
     # Возвращаем данные для отображения на странице
-    return render_template("update_book.html", book=book)
-
+    print(author.first_name, author.last_name)
+    return render_template("update_book.html", book=book, author=author)

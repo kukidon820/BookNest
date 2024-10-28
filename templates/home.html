@@ -44,6 +44,10 @@
             margin-bottom: 10px;
             border-radius: 5px;
         }
+        .delete-book-btn{
+            color: #f44336;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +80,7 @@
                 <p><strong>Добавлено:</strong> {{ book.time_added.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                 <p><strong>Автор:</strong> {{ book.author_id.first_name }} {{ book.author_id.last_name }}</p> <!-- Имя и фамилия автора -->
                 <a href="{{ url_for('update_book.update_book', book_id=book.id) }}" class="update-book-btn">Изменить книгу</a>
+                <a href="{{ url_for('delete_book.delete_book', book_id=book.id) }}" class="delete-book-btn">Удалить книгу</a>
             </div>
         {% endfor %}
     {% else %}
