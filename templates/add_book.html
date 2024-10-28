@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить Книгу</title>
+    <style>
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background-color: #4CAF50;
+            padding: 15px;
+        }
+        .welcome-message {
+            font-size: 18px;
+            color: white;
+            margin-right: auto;
+        }
+        .header a {
+            text-decoration: none;
+            color: white;
+            background-color: #f44336;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-left: 10px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .header a:hover {
+            background-color: #555;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        label, input, textarea {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="welcome-message">
+        {% if session['user_id'] %}
+            Здравствуйте, {{ session['username'] }}!
+        {% else %}
+            Добро пожаловать!
+        {% endif %}
+    </div>
+
+    {% if session['user_id'] %}
+        <a href="{{ url_for('sing_in.route_sing_out') }}">Выйти</a>
+    {% else %}
+        <a href="{{ url_for('sing_in.route_sing_in') }}">Войти</a>
+        <a href="{{ url_for('sing_up.route_sing_up') }}" class="reg">Регистрация</a>
+    {% endif %}
+</div>
+
+<div class="container">
+    <h1>Добавить Книгу</h1>
+
+    <form method="POST" action="{{ url_for('add_book.add_book') }}">
+        <label for="title">Название книги:</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="book_text">Ссылку на ресурс:</label>
+        <textarea id="book_text" name="book_text" rows="5" required></textarea>
+
+        <h2>Информация об авторе</h2>
+        <label for="first_name">Имя автора:</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Фамилия автора:</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <button type="submit">Добавить Книгу</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+
+</body>
+</html>
