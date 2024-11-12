@@ -1,10 +1,28 @@
-from flask import render_template, Blueprint, request, redirect, url_for, flash, session
+from flask import Blueprint, redirect, url_for, flash, session
 from models.create_book_table import Book
 
 delete_book_bp = Blueprint('delete_book', __name__)
 
-@delete_book_bp.route("/delete_book/<int:book_id>", methods=["GET","POST"])
+
+@delete_book_bp.route("/delete_book/<int:book_id>", methods=["GET", "POST"])
 def delete_book(book_id):
+    """
+        Удаляет книгу из базы данных по указанному идентификатору.
+
+        Функция выполняет следующие действия:
+        1. Проверяет наличие user_id в сессии. Если user_id отсутствует, пользователь перенаправляется на страницу входа с сообщением об ошибке.
+        2. Пытается найти книгу по переданному идентификатору book_id.
+        3. Проверяет, принадлежит ли книга пользователю, осуществляющему запрос. Если книга не принадлежит пользователю, отображается сообщение об ошибке.
+        4. Если книга найдена и принадлежит пользователю, происходит удаление книги из базы данных, и отображается сообщение об успешном удалении.
+        5. Обрабатывает исключения, если книга не найдена или если происходит ошибка при удалении.
+
+        Возвращает:
+            - Перенаправление на главную страницу после удаления книги или в случае ошибки.
+
+        Пример запроса (POST):
+            POST /delete_book/1
+    """
+
     print("Переход на delete_book.html")
     user_id = session.get('user_id')
 
