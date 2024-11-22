@@ -51,3 +51,4 @@ def delete_book(book_id):
         flash("Произошла ошибка при удалении книги.")
 
     return redirect(url_for('home.route_home'))  # Перенаправляем на главную страницу после удаления
+

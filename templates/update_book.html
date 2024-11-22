@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Добавить Книгу</title>
+    <title>Изменить Книгу</title>
     <style>
         .header {
             display: flex;
@@ -44,6 +44,9 @@
             display: block;
             width: 100%;
             margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button {
             background-color: #4CAF50;
@@ -56,6 +59,11 @@
         }
         button:hover {
             background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -79,23 +87,24 @@
 </div>
 
 <div class="container">
-    <h1>Добавить Книгу</h1>
+    <h1>Изменить Книгу</h1>
 
-    <form method="POST" action="{{ url_for('add_book.add_book') }}">
+    <form method="POST" action="{{ url_for('update_book.update_book', book_id=book.id) }}">
         <label for="title">Название книги:</label>
-        <input type="text" id="title" name="title" required>
+        <input type="text" id="title" name="title" value="{{ book.book_name }}" required>
 
-        <label for="book_text">Текст:</label>
-        <textarea id="book_text" name="book_text" rows="5" required></textarea>
+        <label for="book_text">Ссылка на ресурс:</label>
+        <textarea id="book_text" name="book_text" rows="4" required>{{ book.book_text }}</textarea>
 
-        <h2>Информация об авторе</h2>
+        <h3>Информация об авторе</h3>
+
         <label for="first_name">Имя автора:</label>
-        <input type="text" id="first_name" name="first_name" required>
+        <input type="text" id="first_name" name="first_name" value="{{ author.first_name }}" required>
 
         <label for="last_name">Фамилия автора:</label>
-        <input type="text" id="last_name" name="last_name" required>
+        <input type="text" id="last_name" name="last_name" value="{{ author.last_name }}" required>
 
-        <button type="submit">Добавить Книгу</button>
+        <button type="submit">Изменить Книгу</button>
     </form>
 
 

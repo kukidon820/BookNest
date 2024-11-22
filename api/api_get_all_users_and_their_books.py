@@ -5,43 +5,73 @@ from models.create_user_table import User
 
 api_get_all_users_and_their_books_bp = Blueprint('get_users_and_their_books', __name__)
 
-
 @api_get_all_users_and_their_books_bp.route('/api/get_all_users_and_books', methods=['GET'])
 def get_all_users_and_books():
     """
-        Получает список всех пользователей и их книг из базы данных.
-
-        Возвращает:
-            - Если пользователи и книги найдены:
-                Возвращает JSON-массив, содержащий информацию о пользователях и их книгах с статусом 200.
-                Каждый объект пользователя имеет следующую структуру:
-                {
-                    "id": int,                   # Уникальный идентификатор пользователя
-                    "first_name": str,           # Имя пользователя
-                    "last_name": str,            # Фамилия пользователя
-                    "books": [                   # Список книг, принадлежащих пользователю
-                        {
-                            "id": int,           # Уникальный идентификатор книги
-                            "book_name": str,    # Название книги
-                            "book_text": str,    # Текст книги (URL или текстовый контент)
-                            "author": str,       # Имя и фамилия автора книги
-                            "time_added": str     # Дата и время добавления книги
-                        },
-                        ...
-                    ]
-                }
-
-            - Если пользователи или книги не найдены:
-                Возвращает JSON с сообщением об отсутствии пользователей или книг и статусом 404.
-                Пример: {"message": "No users or books found"}
-
-            - В случае любой ошибки при выполнении запроса:
-                Возвращает JSON с сообщением об ошибке и статусом 500.
-                Пример: {"error": "Описание ошибки"}
-
-        Пример запроса:
-            GET /api/get_all_users_and_books
-        """
+    Получает список всех пользователей и их книг из базы данных.
+    ---
+    tags:
+      - Users
+    responses:
+      200:
+        description: Успешный ответ с массивом всех пользователей и их книг.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  first_name:
+                    type: string
+                    example: "Иван"
+                  last_name:
+                    type: string
+                    example: "Иванов"
+                  books:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 10
+                        book_name:
+                          type: string
+                          example: "Война и мир"
+                        book_text:
+                          type: string
+                          example: "Текст книги или URL"
+                        author:
+                          type: string
+                          example: "Лев Толстой"
+                        time_added:
+                          type: string
+                          example: "2024-11-19T15:34:45"
+      404:
+        description: Пользователи или книги не найдены.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "No users or books found"
+      500:
+        description: Внутренняя ошибка сервера.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Описание ошибки"
+    """
 
     try:
         users_and_books = []

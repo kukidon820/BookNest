@@ -4,50 +4,79 @@ from models.create_author_table import Author
 
 api_get_book_by_id_bp = Blueprint('get_book_by_id', __name__)
 
+
 @api_get_book_by_id_bp.route('/api/get_book_by_id', methods=['GET'])
 def get_book_by_id():
-
     """
-        Получает информацию о книге по её уникальному идентификатору (ID).
-
-        Запрос ожидает JSON с параметром:
-            - book_id (int): уникальный идентификатор книги, которую нужно найти.
-
-        Возвращает:
-            - Если book_id не указан в запросе:
-                Возвращает JSON с сообщением об ошибке и статусом 400.
-                Пример: {"error": "book_id is required"}
-
-            - Если книга с указанным book_id не найдена:
-                Возвращает JSON с сообщением об отсутствии книги и статусом 404.
-                Пример: {"message": "Book not found"}
-
-            - Если книга найдена:
-                Возвращает JSON с информацией о книге и статусом 200.
-                Структура JSON:
-                {
-                    "id": int,                   # ID книги
-                    "book_name": str,            # Название книги
-                    "book_text": str,            # Текст книги (URL или текстовый контент)
-                    "author": str,               # Имя и фамилия автора
-                    "time_added": str            # Дата и время добавления книги
-                }
-
-            - В случае любой другой ошибки:
-                Возвращает JSON с сообщением об ошибке и статусом 500.
-                Пример: {"error": "Описание ошибки"}
-
-        Исключения:
-            - Book.DoesNotExist: Если книга с указанным book_id отсутствует в базе данных.
-            - Exception: Для любых других ошибок при выполнении запроса.
-
-        Пример запроса:
-            GET /api/get_book_by_id
-            {
-                "book_id": 1
-            }
-        """
-
+    Получает информацию о книге по её уникальному идентификатору (ID).
+    ---
+    tags:
+      - Books
+    parameters:
+      - in: body
+        name: body
+        description: JSON с параметром book_id.
+        required: true
+        schema:
+          type: object
+          properties:
+            book_id:
+              type: integer
+              example: 1
+    responses:
+      200:
+        description: Успешный ответ с информацией о книге.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 1
+                book_name:
+                  type: string
+                  example: "Название книги"
+                book_text:
+                  type: string
+                  example: "Текст книги"
+                author:
+                  type: string
+                  example: "Имя Фамилия"
+                time_added:
+                  type: string
+                  example: "2024-11-19T15:34:45"
+      400:
+        description: Ошибка, если book_id отсутствует в запросе.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "book_id is required"
+      404:
+        description: Ошибка, если книга не найдена.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Book not found"
+      500:
+        description: Внутренняя ошибка сервера.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Описание ошибки"
+    """
     data = request.get_json()
 
     if 'book_id' not in data:
@@ -73,5 +102,4 @@ def get_book_by_id():
         return jsonify(request_to), 200
     else:
         return jsonify({'message': 'Book not found'}), 404
-
 

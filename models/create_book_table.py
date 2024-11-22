@@ -10,7 +10,7 @@ class Book(BaseModel):
     id = IntegerField(primary_key=True)
     user_id = ForeignKeyField(User, backref='post')
     book_name = CharField(max_length=100, null=False)
-    book_text = TextField(null=True)
+    book_text_id = CharField(max_length=24, null=False)
     author_id = ForeignKeyField(Author, backref='post')
     time_added = DateTimeField()
 

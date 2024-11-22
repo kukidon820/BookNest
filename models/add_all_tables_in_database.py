@@ -23,3 +23,4 @@ def create_tables():
 
     # Закрытие соединения
     db.close()
+

@@ -13,3 +13,4 @@ class User(BaseModel):
     password = CharField(max_length=20, null=False)
 
 
+

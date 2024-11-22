@@ -69,3 +69,4 @@ def route_sing_up():
             return render_template("sing_up.html", error="general_error")
 
     return render_template("sing_up.html")
+

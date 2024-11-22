@@ -78,3 +78,4 @@ def route_sing_out():
     session.pop("username", None)
     flash("Вы вышли из аккаунта.")
     return redirect(url_for("home.route_home"))
+

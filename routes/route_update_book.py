@@ -98,3 +98,4 @@ def update_book(book_id):
     # Возвращаем данные для отображения на странице
     print(author.first_name, author.last_name)
     return render_template("update_book.html", book=book, author=author)
+

@@ -7,32 +7,56 @@ api_get_all_books_bp = Blueprint('get_all_books', __name__)
 @api_get_all_books_bp.route('/api/get_all_books', methods=['GET'])
 def get_all_books():
     """
-       Получает список всех книг из базы данных вместе с их авторами.
-
-       Возвращает:
-           - Если книги найдены:
-               Возвращает JSON-массив с информацией о всех книгах и статусом 200.
-               Каждый объект книги имеет следующую структуру:
-               {
-                   "id": int,                    Уникальный идентификатор книги
-                   "book_name": str,             Название книги
-                   "book_text": str,             Текст книги (URL или текстовый контент)
-                   "author": str,                Имя и фамилия автора книги
-                   "time_added": str             Дата и время добавления книги
-               }
-
-           - Если книги не найдены:
-               Возвращает JSON с сообщением об отсутствии книг и статусом 404.
-               Пример: {"Not found books"}
-
-           - В случае любой ошибки при выполнении запроса:
-               Возвращает JSON с сообщением об ошибке и статусом 500.
-               Пример: {"error": "Описание ошибки"}
-
-       Пример запроса:
-           GET /api/get_all_books
-       """
-
+    Получает список всех книг из базы данных вместе с их авторами.
+    ---
+    tags:
+      - Books
+    responses:
+      200:
+        description: Успешный ответ с массивом всех книг.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  book_name:
+                    type: string
+                    example: "Название книги"
+                  book_text:
+                    type: string
+                    example: "Текст книги"
+                  author:
+                    type: string
+                    example: "Имя Фамилия"
+                  time_added:
+                    type: string
+                    example: "2024-11-19T15:34:45"
+      404:
+        description: Книги не найдены.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Not found books"
+      500:
+        description: Внутренняя ошибка сервера.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Описание ошибки"
+    """
     books = Book.select().join(Author)
 
     try:
@@ -51,3 +75,4 @@ def get_all_books():
         return jsonify({'error': str(e)}), 500
 
     return jsonify({"Not found books"}), 404
+

@@ -2,6 +2,7 @@ from flask import render_template, Blueprint, request, flash, session, redirect,
 from datetime import datetime
 from models.create_book_table import Book
 from models.create_author_table import Author
+from models.functions_for_mongo import save_book_test_to_mongo
 
 add_book_site_bp = Blueprint('add_book', __name__)
 
@@ -62,10 +63,11 @@ def add_book():
 
         # Создаем и сохраняем книгу
         try:
+            book_text_id = save_book_test_to_mongo(request.form['book_text'])
             new_book = Book(
                 user_id=user_id,
                 book_name=request.form['title'],
-                book_text=request.form['book_text'],
+                book_text_id=book_text_id,
                 author_id=author_id,
                 time_added=datetime.now()
             )

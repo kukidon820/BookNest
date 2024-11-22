@@ -5,3 +5,5 @@ Flask-Marshmallow==1.2.1
 apispec==6.7.0
 apispec-webframeworks==1.2.0
 flask-swag==0.1.2
+flasgger~=0.9.7.1
+pymongo==4.10.1
